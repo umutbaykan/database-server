@@ -4,10 +4,17 @@ const app = require('./server');
 describe('app', () => {
   describe('GET /get', () => {
     test('should return the value passed in the key parameter', async () => {
-      const value = 'testkey';
-      const response = await request(app).get(`/get?key=${value}`);
+      const key = 'testkey';
+      const response = await request(app).get(`/get?key=${key}`);
       expect(response.status).toBe(200);
-      expect(response.text).toBe('testvalue');
+      expect(response.text).toEqual('testvalue');
+    });
+
+    test('should return invalid request with a status code of 404 if no key exists', async () => {
+      const key = 'noKey';
+      const response = await request(app).get(`/get?key=${key}`);
+      expect(response.status).toBe(404);
+      expect(response.text).toEqual('Invalid request');
     });
   });
 
@@ -15,6 +22,17 @@ describe('app', () => {
     test('should set the value of a key to the value', async () => {
       const key = 'somekey';
       const value = 'somevalue';
+      await request(app).post(`/set?${key}=${value}`);
+      const response = await request(app).get(`/get?key=${key}`);
+      expect(response.status).toBe(200);
+      expect(response.text).toEqual(value);
+    });
+
+    test('can change the value of an existing key to something else', async () => {
+      const key = 'testkey';
+      const initialResponse = await request(app).get(`/get?key=${key}`);
+      expect(initialResponse.text).toBe('testvalue');
+      const value = 'new';
       await request(app).post(`/set?${key}=${value}`);
       const response = await request(app).get(`/get?key=${key}`);
       expect(response.status).toBe(200);
