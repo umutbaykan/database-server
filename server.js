@@ -1,6 +1,8 @@
 const express = require('express');
 const app = express();
 
+const getRouter = require('./routes/get')
+
 let database;
 if (require.main === module || process.argv[1].endsWith('launch.js')) {
   database = require('./store');
@@ -8,14 +10,7 @@ if (require.main === module || process.argv[1].endsWith('launch.js')) {
   database = require('./store_test');
 }
 
-app.get('/get', (req, res) => {
-  const response = database[req.query.key];
-  if (response === undefined) {
-    res.status(404).send('Invalid request');
-  } else {
-    res.send(response);
-  }
-});
+app.use('/get', getRouter)
 
 app.post('/set', (req, res) => {
   const userKey = Object.keys(req.query)[0];
