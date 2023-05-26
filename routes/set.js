@@ -1,8 +1,8 @@
 const express = require('express');
 const router = express.Router();
 
-const GetController = require('../controllers/get');
+const SetController = require('../controllers/set');
 
-router.get('/', GetController.Index);
+router.post('/', SetController.Index);
 
 module.exports = router;

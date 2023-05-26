@@ -3,7 +3,7 @@ const app = require('./server');
 
 describe('app', () => {
   describe('GET /get', () => {
-    test.only('should return the value passed in the key parameter', async () => {
+    test('should return the value passed in the key parameter', async () => {
       const key = 'testkey';
       const response = await request(app).get(`/get?key=${key}`);
       expect(response.status).toBe(200);

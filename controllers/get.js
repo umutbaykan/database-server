@@ -1,4 +1,4 @@
-const Database = require('../models/data')
+const Database = require('../models/data');
 
 const GetController = {
   Index: (req, res) => {
@@ -6,9 +6,9 @@ const GetController = {
     if (response) {
       res.send(response);
     } else {
-      res.status(404).send('Invalid request')
+      res.status(404).send('Invalid request');
     }
-  }
-}
+  },
+};
 
 module.exports = GetController;

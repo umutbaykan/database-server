@@ -2,6 +2,7 @@ const express = require('express');
 const app = express();
 
 const getRouter = require('./routes/get')
+const setRouter = require('./routes/set')
 
 let database;
 if (require.main === module || process.argv[1].endsWith('launch.js')) {
@@ -11,12 +12,6 @@ if (require.main === module || process.argv[1].endsWith('launch.js')) {
 }
 
 app.use('/get', getRouter)
-
-app.post('/set', (req, res) => {
-  const userKey = Object.keys(req.query)[0];
-  const value = req.query[userKey];
-  database[userKey] = value;
-  res.send('ok!');
-});
+app.use('/set', setRouter)
 
 module.exports = app;
